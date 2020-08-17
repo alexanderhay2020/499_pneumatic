@@ -2,7 +2,7 @@
 
 ## Timeline of Project
 <p>
-    <center><img src="/summer_project/design/schedule.png" width="100%;" height="100%;" alt/></center>
+    <center><img src="/design/schedule.png" width="100%;" height="100%;" alt/></center>
 </p>
 
 ## Scope & Motivation
