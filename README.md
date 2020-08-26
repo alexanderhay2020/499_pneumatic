@@ -75,9 +75,20 @@ To create the sensory signal I developed a small piston that presses on the fing
     <em>Figure 4: Cross section of the pneumatic actuator</em></center>
 </p>
 
+Air is directed in and out of the piston using a solenoid controlled by the PIC32 microcontroller. The solenoid has three (3) positions; allowing airflow to the cylinder, allowing airflow from the cylinder, and a neutral position that restricts all airflow.
+
+<p>
+  <center>
+    <a href="https://www.lunchboxsessions.com/materials/flow-directional-control-valves/directional-control-valve-simulation"><img src="/design/left-open.gif" width="40%;" height="100%;" style="margin-right:50px;"></a>
+    <a href="https://www.lunchboxsessions.com/materials/flow-directional-control-valves/directional-control-valve-simulation"><img src="/design/right-open.gif" width="40%;" height="100%;"></a>
+    <br>
+    <em>Figure 5: Solenoid directing airflow. Graphic source: lunchboxsessions.com</em>
+  </center>
+</p>
+
 ### Circuit
 
-Figure 5 shows the circuit diagram. The PIC32 communicates with the pressure sensor using one of the analog input pins. A voltage divider (not shown) brings the max voltage from the sensor from 5v down to a more tolerable 3.3v. The PIC's analog-to-digital converter (ADC) converts the analog voltage into a digital signal. Configuration of the ADC for this project can be found [here](https://github.com/alexanderhay2020/499_pneumatic/blob/master/firmware/src/adc.c). To reduce noise. an average is taken across 10 voltage samples. This increases accuracy at the cost of latency.
+The PIC32 communicates with the pressure sensor using one of the analog input pins. A voltage divider (not shown) brings the max voltage from the sensor from 5v down to a more tolerable 3.3V. The PIC's analog-to-digital converter (ADC) converts the analog voltage into a digital signal. Configuration of the ADC for this project can be found [here](https://github.com/alexanderhay2020/499_pneumatic/blob/master/firmware/src/adc.c). To reduce noise. an average is taken across 10 voltage samples. This increases accuracy at the cost of latency.
 
 <p>
     <center><img src="/design/circuit.png" width="80%;" height="50%;" alt/>
@@ -85,9 +96,15 @@ Figure 5 shows the circuit diagram. The PIC32 communicates with the pressure sen
     <em>Figure 5: Circuit diagram of the system</em></center>
 </p>
 
+The solenoid operates at 120V and needed its own circuit. To control that circuit I used a relay module. This allows the PIC to control the 120V solenoid while still operating at 3.3V. Powered by its own 5V source, a command signal is sent to the relay module from the PIC. Energizing the solenoid to close the 120V circuit draws a lot of current, so the relay module should have it's own power supply.
+
 ## Future work
 
-Knowing if/when the piston engages with the finger is also important. The PIC32 microcontroller has a peripheral called the Charge Time Measurement Unit (CTMU), allowing for capacitive touch sensing. The surface the fingertip engages with must be conductive (and MRI-compatible, ie. aluminum foil) for it to work. Studies examining the heating effects of MRI scanning have shown that no significant heating occurs with nonferromagnetic materials.<sup>[[x]](https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.1910070302?sid=nlm%3Apubmed)</sup> This means the individual won't risk burning their finger. And because the peripheral is non-moving, there's no risk of interference during imaging.
+During development I made it a priority that the device was MRI-compatible, which influenced many of the design considerations and challenges. The decision to use a pneumatic system made it so there is no interference from the apparatus during the MR imaging process. However, air is a compressible fluid which makes it difficult to control. A hydraulic system was considered to address that but was never implemented due to concerns about leakage.
+
+The control loop, as it is currently, only uses a pressure sensor to infer force applied by the piston, and is only feed-forward. To close the control loop, an optical linear encoder using fiber optic cables was considered, but ultimately shelved due to time constraints.
+
+Knowing if/when the piston engages with the finger is also important. The PIC32 microcontroller has a peripheral called the Charge Time Measurement Unit (CTMU), allowing for capacitive touch sensing. For it to work, the surface that the fingertip engages with must be conductive (and MRI-compatible, ie. aluminum foil) for it to work. Studies examining the heating effects of MRI scanning have shown that no significant heating occurs with nonferromagnetic materials.<sup>[[2]](https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.1910070302?sid=nlm%3Apubmed)</sup> This means the individual won't risk burning their finger. And because the peripheral is non-moving, there's no risk of interference during imaging<sup>[[3]](https://pubmed.ncbi.nlm.nih.gov/18982643/)</sup>.
 
 ## References
 
