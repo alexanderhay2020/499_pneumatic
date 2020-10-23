@@ -4,8 +4,6 @@
 #ifndef I2C_H__
 #define I2C_H__
 
-#define SLAVE 0x40
-
 // Header file for i2c.c
 // helps implement use I2C1 as a master without using interrupts
 

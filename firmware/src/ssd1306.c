@@ -15,7 +15,7 @@ void ssd1306_setup() {
     // give a little delay for the ssd1306 to power up
     _CP0_SET_COUNT(0);
 
-    i2c_master_setup();
+//    i2c_master_setup();
 
     while (_CP0_GET_COUNT() < 48000000 / 2 / 50) {
     }
