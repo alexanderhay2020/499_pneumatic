@@ -1,11 +1,24 @@
+/*
+ * ADC code was borrowed from the M5 makerspace
+ * Department of Electrical and Computer Engineering
+ * University of Massachusetts
+ * http://umassamherstm5.org/tech-tutorials/pic32-tutorials/pic32mx220-tutorials/adc
+ */
+
 #include<xc.h>
 #include<sys/attribs.h>
 
 #ifndef ADC__H__
 #define ADC__H__
 
-//void init_ADC(void);
-unsigned int adc_sample_convert(int pin);
-unsigned int read_adc(int pin);
+int analogRead(char analogPIN);
+void delay_us(unsigned t);
+void adcConfigureManual();
+void adcConfigureAutoScan(unsigned adcPINS, unsigned numPins);
+int analogRead_auto();
+
+void ctmu_setup();
+int ctmu_read(int pin, int delay);
+unsigned int do_cap(int pin, int delay);
 
 #endif // ADC__H__

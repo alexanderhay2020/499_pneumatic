@@ -123,8 +123,8 @@ static const char ASCII[96][5] = {
 }; // end char ASCII[96][5]
 
 // ILI9341 registers
-#define ILI9341_TFTWIDTH   240      ///< ILI9341 max TFT width
-#define ILI9341_TFTHEIGHT  320      ///< ILI9341 max TFT height
+#define ILI9341_TFTWIDTH   320      ///< ILI9341 max TFT width
+#define ILI9341_TFTHEIGHT  240      ///< ILI9341 max TFT height
 
 #define ILI9341_NOP        0x00     ///< No-op register
 #define ILI9341_SWRESET    0x01     ///< Software reset register

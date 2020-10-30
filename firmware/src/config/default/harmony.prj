@@ -11,6 +11,7 @@
       <Setting dnOrder="3" key="GENERATE_BACKUP" value="true"/>
       <Setting dnOrder="4" key="MERGE_STRATEGY" value="USER_ALL"/>
       <Setting dnOrder="5" key="PackageFilter" value="cryptoauthlib_apps;touch;core;bsp;micrium_ucos3;gfx;expresslogic_threadx;wireless;usb;net;csp;audio;cryptoauthlib;aws_cloud;bootloader;bt;motor_control;crypto;aerospace;gfx_apps;"/>
+      <Setting dnOrder="6" key="TRUSTZONE" value="false"/>
     </Settings>
   </Configurator>
 </Configuration>

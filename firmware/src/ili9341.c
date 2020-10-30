@@ -177,7 +177,7 @@ void LCD_init() {
     CS = 0; // CS
     
     LCD_command(ILI9341_MADCTL);
-    LCD_data(MADCTL_MX | MADCTL_BGR); // rotation
+    LCD_data(0xE0); // rotation
     time = _CP0_GET_COUNT();
     while (_CP0_GET_COUNT() < time + 3600000) {} // 150ms
     
@@ -301,12 +301,5 @@ void clear_space(unsigned short x, unsigned y, unsigned short end) {
             LCD_drawPixel(x, y + i, ILI9341_BLACK);
         }
         x++;
-    }
-}
-
-void draw_progress(int count) {
-    int i;
-    for(i = 0; i<=8; i++) {
-        LCD_drawPixel(28 + count, 50 + i, ILI9341_GREEN);
     }
 }
