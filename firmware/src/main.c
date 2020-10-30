@@ -8,6 +8,7 @@
 #include "init.h"
 #include "ili9341.h"
 #include "adc.h"
+#include "uart.h"
 
 void ui(){
     
@@ -102,16 +103,11 @@ int main() {
     TRISBbits.TRISB3 = 1;           // sets RB3 as input
 //    
 //    // Toggle Switch
-//    TRISAbits.TRISA4 = 0;           // sets RA4 as output
-//    LATAbits.LATA4 = 0;             // sets RA4 to low
-//    TRISBbits.TRISB4 = 0;           // sets RB4 as output
-//    LATBbits.LATB4 = 0;             // sets RB4 to low
-    
     TRISBbits.TRISB10 = 1;          // RB10 as input
     TRISBbits.TRISB11 = 1;          // RB11 as input
-    ANSELBbits.ANSB12 = 0;          // B12 as digital
-    TRISBbits.TRISB12 = 0;          // RB12 as output
-    TRISBbits.TRISB13 = 0;          // RB13 as output
+//    ANSELBbits.ANSB12 = 0;          // B12 as digital
+//    TRISBbits.TRISB12 = 0;          // RB12 as output
+//    TRISBbits.TRISB13 = 0;          // RB13 as output
 
     init_pic();
     
@@ -123,7 +119,7 @@ int main() {
     double pressure=0;
     char temp_msg[30];
     int i = 0;
-    char message[100];
+    char message[10];
     
     ui();
     
@@ -182,18 +178,30 @@ int main() {
         }
         
         if(PORTBbits.RB11){
-            LATAbits.LATA4 = 1;             // sets RA4 to hi
-            LATBbits.LATB4 = 0;
             index = 0;
             sprintf(temp_msg, "EXTENDED ");
             while(temp_msg[index]) {
                 print_char(240 + 5*index, 40, temp_msg[index]);
                 index++;
             } 
+            
+            index = 0;
+            sprintf(message, "U%d",i);
+            while(message[index]) {
+                print_char(240 + 5*index, 72, message[index]);
+                index++;
+            }
+            writeUART(message);
+            i++;
         }
         else{
-            LATAbits.LATA4 = 0;             // sets RA4 to hi
-            LATBbits.LATB4 = 1;
+            i = 0;
+            index = 0;
+            sprintf(message, "      ");
+            while(message[index]) {
+                print_char(240 + 5*index, 72, message[index]);
+                index++;
+            }
             index = 0;
             sprintf(temp_msg, "RETRACTED");
             while(temp_msg[index]) {

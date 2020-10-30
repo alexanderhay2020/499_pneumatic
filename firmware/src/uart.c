@@ -1,11 +1,14 @@
 #include <xc.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "init.h"
 #include "adc.h"
 
-void initUART(){
+void initUART(){//char tx, char rx){
+    
+    U1MODE = 0;
     // Set U1TX pin to B4
     RPB4Rbits.RPB4R = 0b0001;
     
@@ -34,8 +37,24 @@ void writeUART(char * string){
             ;                               // Wait until TX buffer isn't full
         }
         U1TXREG = *string;
+        string++;
     }
 }
+
+//{
+//    unsigned int size = strlen(string);
+//    while(size)
+//    {
+//        while( U2STAbits.UTXBF);    // wait while TX buffer full
+//        U2TXREG = *string;          // send single character to transmit buffer
+//        string++;                   // transmit next character on following loop
+//        size--;                     // loop until all characters sent (when size = 0)
+//    }
+// 
+//    while( !U2STAbits.TRMT);        // wait for last transmission to finish
+// 
+//    return 0;
+//}
 
 // Read from UART1
 // Block other functions until you get a '\r' or '\n'

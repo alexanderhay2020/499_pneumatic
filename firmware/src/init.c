@@ -55,7 +55,7 @@ void init_pic(){
     adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
     AD1CON1SET = 0x8000;                // start ADC
 //    ctmu_setup ();
-    initUART();
+    initUART();//0b0001, 0b0010);
     
     __builtin_enable_interrupts();
 }
