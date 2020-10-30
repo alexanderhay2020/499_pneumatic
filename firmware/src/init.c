@@ -2,6 +2,9 @@
 #include<sys/attribs.h>             // __ISR macro
 
 #include "init.h"
+#include "ili9341.h"
+#include "adc.h"
+#include "uart.h"
 
 // DEVCFG0
 #pragma config DEBUG = ON           // disable debugging

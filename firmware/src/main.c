@@ -122,6 +122,8 @@ int main() {
     int cap = 0;
     double pressure=0;
     char temp_msg[30];
+    int i = 0;
+    char message[100];
     
     ui();
     
