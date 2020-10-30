@@ -4,7 +4,7 @@
 #ifndef UART__H__
 #define UART__H__
 
-void initUART();
+void initUART(char tx, char rx);
 void writeUART(char * string);
 void readUART(char * message, int maxLength);
 

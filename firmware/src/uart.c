@@ -6,14 +6,14 @@
 #include "init.h"
 #include "adc.h"
 
-void initUART(){//char tx, char rx){
+void initUART(char tx, char rx){
     
     U1MODE = 0;
     // Set U1TX pin to B4
-    RPB4Rbits.RPB4R = 0b0001;
+    RPB4Rbits.RPB4R = tx;
     
     // Set U1RX pin to A4
-    U1RXRbits.U1RXR = 0b0010;
+    U1RXRbits.U1RXR = rx;
     
     // Turn on UART1 without interrupt
     U1MODEbits.BRGH = 0;                    // set baud to 9600 bits/sec
