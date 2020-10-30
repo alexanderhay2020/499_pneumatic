@@ -83,17 +83,15 @@ double transfer_function(int voltage){
 
 int main() {
 
-    // initializations
-    init_pic();
-    SPI1_init();
-    LCD_init();
-//    adcConfigureManual();             // Configure ADC
-    adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
-    AD1CON1SET = 0x8000;                // start ADC
-//    ctmu_setup ();
-    
+    // Initializations
 
-    // set pins
+//    SPI1_init();
+//    LCD_init();
+////    adcConfigureManual();             // Configure ADC
+//    adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
+//    AD1CON1SET = 0x8000;                // start ADC
+////    ctmu_setup ();
+//    initUART();
     
     // Touch Sensor
     ANSELBbits.ANSB2 = 1;           // sets RB3 (AN4) as analog
@@ -104,10 +102,10 @@ int main() {
     TRISBbits.TRISB3 = 1;           // sets RB3 as input
 //    
 //    // Toggle Switch
-    TRISAbits.TRISA4 = 0;           // sets RA4 as output
-    LATAbits.LATA4 = 0;             // sets RA4 to low
-    TRISBbits.TRISB4 = 0;           // sets RB4 as output
-    LATBbits.LATB4 = 0;             // sets RB4 to low
+//    TRISAbits.TRISA4 = 0;           // sets RA4 as output
+//    LATAbits.LATA4 = 0;             // sets RA4 to low
+//    TRISBbits.TRISB4 = 0;           // sets RB4 as output
+//    LATBbits.LATB4 = 0;             // sets RB4 to low
     
     TRISBbits.TRISB10 = 1;          // RB10 as input
     TRISBbits.TRISB11 = 1;          // RB11 as input
@@ -115,6 +113,7 @@ int main() {
     TRISBbits.TRISB12 = 0;          // RB12 as output
     TRISBbits.TRISB13 = 0;          // RB13 as output
 
+    init_pic();
     
     // variables
 //    int freq = 5;

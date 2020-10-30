@@ -46,5 +46,13 @@ void init_pic(){
     INTCONbits.MVEC = 0x1;          // enable multi vector interrupts
     DDPCONbits.JTAGEN = 0;          // disable JTAG to get pins back
 
+    SPI1_init();
+    LCD_init();
+//    adcConfigureManual();             // Configure ADC
+    adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
+    AD1CON1SET = 0x8000;                // start ADC
+//    ctmu_setup ();
+    initUART();
+    
     __builtin_enable_interrupts();
 }
