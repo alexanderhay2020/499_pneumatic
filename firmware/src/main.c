@@ -122,11 +122,11 @@ int main() {
     // variables
 //    int freq = 5;
     int voltage;
-    int cap = 0;
+//    int cap = 0;
     double pressure=0;
     char temp_msg[30];
-    int i = 0;
-    char tx_msg[10];    
+//    int i = 0;
+//    char tx_msg[10];    
 //    char rx_msg[20];
 //    char buf[1024];       // declare receive buffer with max size 1024
     
@@ -158,37 +158,26 @@ int main() {
             write_screen(200, 24, temp_msg);
         }
         
-        sprintf(temp_msg, "Pressure:           %5.3f PSI ", pressure);
-        write_screen(28, 24, temp_msg);
-        
-        sprintf(temp_msg, "Update Frequency:    %3.1f Hz", (24000000.0/_CP0_GET_COUNT()));
-        write_screen(28, 40, temp_msg);
-        
-        sprintf(temp_msg, "RB10, Pin 21:   %d", PORTBbits.RB10);
-        write_screen(28, 56, temp_msg);
-        
-        sprintf(temp_msg, "RB11, Pin 22:   %d", PORTBbits.RB11);
-        write_screen(28, 72, temp_msg);
-        
-        sprintf(temp_msg, "ADC Read:           %d  ", voltage);
-        write_screen(28, 86, temp_msg);
-        
         if(PORTBbits.RB11){
-            sprintf(temp_msg, "TRANSMITTING");
-            write_screen(240, 40, temp_msg); 
+            LATBbits.LATB12 = 1;
+            LATBbits.LATB13 = 0;
+//            sprintf(temp_msg, "TRANSMITTING");
+//            write_screen(240, 40, temp_msg); 
             
-            sprintf(tx_msg, "U%d",i);
-            sprintf(temp_msg, "Tx: %s",tx_msg);
-            write_screen(200, 72, temp_msg);
-            writeUART(tx_msg);
-            i++;
+//            sprintf(tx_msg, "U%d",i);
+//            sprintf(temp_msg, "Tx: %s",tx_msg);
+//            write_screen(200, 72, temp_msg);
+//            writeUART(tx_msg);
+//            i++;
         }
         if(PORTBbits.RB10){
-            sprintf(temp_msg, "RECEIVING   ");
-            write_screen(240, 40, temp_msg);
-
-            i = 0;
-            sprintf(temp_msg, "Tx:              ");
+            LATBbits.LATB12 = 0;
+            LATBbits.LATB13 = 1;
+//            sprintf(temp_msg, "RECEIVING   ");
+//            write_screen(240, 40, temp_msg);
+//
+//            i = 0;
+//            sprintf(temp_msg, "Tx:              ");
 //            write_screen(200, 72, temp_msg);
 
 //            sprintf(tx_msg,"\r\n");
@@ -214,15 +203,35 @@ int main() {
 //                }
 //            }
         }
-        if (cap>1120){
-            sprintf(temp_msg, "Untouched");
-            write_screen(240, 56, temp_msg);
-        }
-        else{
-            sprintf(temp_msg, "Touched");
-            write_screen(240, 56, temp_msg);           
-        }
+        sprintf(temp_msg, "Pressure:           %5.3f PSI ", pressure);
+        write_screen(28, 24, temp_msg);
         
+        sprintf(temp_msg, "Update Frequency:    %3.1f Hz", (24000000.0/_CP0_GET_COUNT()));
+        write_screen(28, 40, temp_msg);
+        
+        sprintf(temp_msg, "RB10, Pin 21:   %d", PORTBbits.RB10);
+        write_screen(28, 56, temp_msg);
+        
+        sprintf(temp_msg, "RB11, Pin 22:   %d", PORTBbits.RB11);
+        write_screen(28, 72, temp_msg);
+        
+        sprintf(temp_msg, "RB12, Pin 23:   %d", LATBbits.LATB12);
+        write_screen(28, 88, temp_msg);
+        
+        sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
+        write_screen(28, 104, temp_msg);
+        
+//        sprintf(temp_msg, "ADC Read:           %d  ", voltage);
+//        write_screen(28, 86, temp_msg);
+//        if (cap>1120){
+//            sprintf(temp_msg, "Untouched");
+//            write_screen(240, 56, temp_msg);
+//        }
+//        else{
+//            sprintf(temp_msg, "Touched");
+//            write_screen(240, 56, temp_msg);           
+//        }
+//        
 //        draw_piston(PORTBbits.RB11);
 //        
     }
