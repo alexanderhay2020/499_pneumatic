@@ -41,43 +41,52 @@ void writeUART(char * string){
     }
 }
 
-//{
-//    unsigned int size = strlen(string);
-//    while(size)
-//    {
-//        while( U2STAbits.UTXBF);    // wait while TX buffer full
-//        U2TXREG = *string;          // send single character to transmit buffer
-//        string++;                   // transmit next character on following loop
-//        size--;                     // loop until all characters sent (when size = 0)
-//    }
-// 
-//    while( !U2STAbits.TRMT);        // wait for last transmission to finish
-// 
-//    return 0;
-//}
-
 // Read from UART1
 // Block other functions until you get a '\r' or '\n'
 // Send the pointer to you char array and the number of elements in the array
-void readUART(char * message, int maxLength){
-    char data = 0;
-    int complete = 0, num_bytes = 0;
-    // loop until you get a '\r' or '\n'
-    while (!complete){
-        if (U1STAbits.URXDA){               // If data is available
-            data = U1RXREG;                 // Read the data
-            if ((data == '\n') || (data == '\r')){
-                complete = 1;
-            } else {
-                message[num_bytes] = data;
-                ++num_bytes;
-                // Roll over if array is too small
-                if (num_bytes >= maxLength){
-                    num_bytes = 0;
-                }
-            }
+int readUART(char *buffer, unsigned int max_size)
+{
+    unsigned int num_char = 0;
+ 
+    /* Wait for and store incoming data until either a carriage return is received
+     *   or the number of received characters (num_chars) exceeds max_size */
+    while(num_char < max_size)
+    {
+        while(!U1STAbits.URXDA);   // wait until data available in RX buffer
+        *buffer = U1RXREG;          // empty contents of RX buffer into *buffer pointer
+ 
+        // insert nul character to indicate end of string
+        if( *buffer == '\r'){
+            *buffer = '\0';     
+            break;
         }
+        buffer++;
+        num_char++;
     }
-    // End the string
-    message[num_bytes] = '\0';
-}
+ 
+    return num_char;
+} 
+
+
+//char * message, int maxLength){
+//    char data = 0;
+//    int complete = 0, num_bytes = 0;
+//    // loop until you get a '\r' or '\n'
+//    while (!complete){
+//        if (U1STAbits.URXDA){               // If data is available
+//            data = U1RXREG;                 // Read the data
+//            if ((data == '\n') || (data == '\r')){
+//                complete = 1;
+//            } else {
+//                message[num_bytes] = data;
+//                ++num_bytes;
+//                // Roll over if array is too small
+//                if (num_bytes >= maxLength){
+//                    num_bytes = 0;
+//                }
+//            }
+//        }
+//    }
+//    // End the string
+//    message[num_bytes] = '\0';
+//}

@@ -82,6 +82,14 @@ double transfer_function(int voltage){
     return pressure;
 }
 
+void write_screen(int x, int y, char *msg){
+    int index = 0;
+    while(msg[index]) {
+        print_char(x + 5*index, y, msg[index]);
+        index++;
+    }
+}
+
 int main() {
 
     // Initializations
@@ -105,21 +113,22 @@ int main() {
 //    // Toggle Switch
     TRISBbits.TRISB10 = 1;          // RB10 as input
     TRISBbits.TRISB11 = 1;          // RB11 as input
-//    ANSELBbits.ANSB12 = 0;          // B12 as digital
-//    TRISBbits.TRISB12 = 0;          // RB12 as output
-//    TRISBbits.TRISB13 = 0;          // RB13 as output
+    ANSELBbits.ANSB12 = 0;          // B12 as digital
+    TRISBbits.TRISB12 = 0;          // RB12 as output
+    TRISBbits.TRISB13 = 0;          // RB13 as output
 
     init_pic();
     
     // variables
 //    int freq = 5;
     int voltage;
-    int index = 0;
     int cap = 0;
     double pressure=0;
     char temp_msg[30];
     int i = 0;
-    char message[10];
+    char tx_msg[10];    
+//    char rx_msg[20];
+//    char buf[1024];       // declare receive buffer with max size 1024
     
     ui();
     
@@ -139,106 +148,82 @@ int main() {
         // Check if sensor is clipping
         // Clipping occurs at 2.5% and 97.5% V_s (ADC values of 26 and 997)
         if (voltage < 26 || voltage > 997){
-            index = 0;
+//            write_screen(200, 24, temp_msg)
             sprintf(temp_msg, "Status: Clipping");
-            while(temp_msg[index]) {
-                print_char(200 + 5*index, 24, temp_msg[index]);
-                index++;
-            }
+            write_screen(200, 24, temp_msg);
         }
         else{
             pressure = transfer_function(voltage);
-            index = 0;
             sprintf(temp_msg, "Status: Normal  ");
-            while(temp_msg[index]) {
-                print_char(200 + 5*index, 24, temp_msg[index]);
-                index++;
-            }
-        }
-
-        index = 0;
-        sprintf(temp_msg, "ADC Read:           %d  ", voltage);
-        while(temp_msg[index]) {
-            print_char(28 + 5*index, 86, temp_msg[index]);
-            index++;
+            write_screen(200, 24, temp_msg);
         }
         
-        index = 0;
         sprintf(temp_msg, "Pressure:           %5.3f PSI ", pressure);
-        while(temp_msg[index]) {
-            print_char(28 + 5*index, 24, temp_msg[index]);
-            index++;
-        }
+        write_screen(28, 24, temp_msg);
         
-        index = 0;
         sprintf(temp_msg, "Update Frequency:    %3.1f Hz", (24000000.0/_CP0_GET_COUNT()));
-        while(temp_msg[index]) {
-            print_char(28 + 5*index, 40, temp_msg[index]);
-            index++;
-        }
+        write_screen(28, 40, temp_msg);
+        
+        sprintf(temp_msg, "RB10, Pin 21:   %d", PORTBbits.RB10);
+        write_screen(28, 56, temp_msg);
+        
+        sprintf(temp_msg, "RB11, Pin 22:   %d", PORTBbits.RB11);
+        write_screen(28, 72, temp_msg);
+        
+        sprintf(temp_msg, "ADC Read:           %d  ", voltage);
+        write_screen(28, 86, temp_msg);
         
         if(PORTBbits.RB11){
-            index = 0;
-            sprintf(temp_msg, "EXTENDED ");
-            while(temp_msg[index]) {
-                print_char(240 + 5*index, 40, temp_msg[index]);
-                index++;
-            } 
+            sprintf(temp_msg, "TRANSMITTING");
+            write_screen(240, 40, temp_msg); 
             
-            index = 0;
-            sprintf(message, "U%d",i);
-            while(message[index]) {
-                print_char(240 + 5*index, 72, message[index]);
-                index++;
-            }
-            writeUART(message);
+            sprintf(tx_msg, "U%d",i);
+            sprintf(temp_msg, "Tx: %s",tx_msg);
+            write_screen(200, 72, temp_msg);
+            writeUART(tx_msg);
             i++;
         }
-        else{
+        if(PORTBbits.RB10){
+            sprintf(temp_msg, "RECEIVING   ");
+            write_screen(240, 40, temp_msg);
+
             i = 0;
-            index = 0;
-            sprintf(message, "      ");
-            while(message[index]) {
-                print_char(240 + 5*index, 72, message[index]);
-                index++;
-            }
-            index = 0;
-            sprintf(temp_msg, "RETRACTED");
-            while(temp_msg[index]) {
-                print_char(240 + 5*index, 40, temp_msg[index]);
-                index++;
-            } 
+            sprintf(temp_msg, "Tx:              ");
+//            write_screen(200, 72, temp_msg);
+
+//            sprintf(tx_msg,"\r\n");
+//            writeUART(tx_msg);
+//            sprintf(temp_msg, "Tx:   %s", tx_msg);
+//            write_screen(200, 72, temp_msg);
+ 
+
+            
+//            unsigned int rx_size;
+//            rx_size = readUART(rx_msg, 1024);     // wait here until data is received
+//            writeUART(rx_msg);                    // Send out data exactly as received
+//
+//            // if anything was entered by user, be obnoxious and add a '?'
+//            if(rx_size > 0){ 
+//                sprintf(tx_msg,"?\r\n");
+//                writeUART(tx_msg);
+//                index = 0;
+//                sprintf(temp_msg, "Tx:   %s", tx_msg);
+//                while(temp_msg[index]) {
+//                    print_char(200 + 5*index, 72, temp_msg[index]);
+//                    index++;
+//                }
+//            }
         }
         if (cap>1120){
-            index = 0;
             sprintf(temp_msg, "Untouched");
-            while(temp_msg[index]) {
-                print_char(240 + 5*index, 56, temp_msg[index]);
-                index++;
-            } 
+            write_screen(240, 56, temp_msg);
         }
         else{
-            index = 0;
             sprintf(temp_msg, "Touched");
-            while(temp_msg[index]) {
-                print_char(240 + 5*index, 56, temp_msg[index]);
-                index++;
-            }             
+            write_screen(240, 56, temp_msg);           
         }
         
 //        draw_piston(PORTBbits.RB11);
 //        
-        index = 0;
-        sprintf(temp_msg, "RB10, Pin 21:   %d", PORTBbits.RB10);
-        while(temp_msg[index]) {
-            print_char(28 + 5*index, 56, temp_msg[index]);
-            index++;
-        }
-        index = 0;
-        sprintf(temp_msg, "RB11, Pin 22:   %d", PORTBbits.RB11);
-        while(temp_msg[index]) {
-            print_char(28 + 5*index, 72, temp_msg[index]);
-            index++;
-        }
     }
 }
