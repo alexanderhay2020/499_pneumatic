@@ -10,16 +10,83 @@
 #include "adc.h"
 #include "uart.h"
 
+void write_screen(int x, int y, char *msg){
+    int index = 0;
+    while(msg[index]) {
+        print_char(x + 5*index, y, msg[index]);
+        index++;
+    }
+}
+
+void plot_axis(){
+    // (0,0)            (320,0)
+    //   + - - - - - - - - -
+    //   |
+    //   |
+    //   |
+    // (0,240)
+    
+    // x-axis
+    int x = 0;
+    int x_offset = 210;
+    int y = 0;
+    int y_offset = 167;
+    for(x=0;x<100;x++){
+        LCD_drawPixel(x+x_offset, y+y_offset, ILI9341_WHITE);
+    }
+    
+    // y-axis
+    x = 0;
+    y_offset = 40;
+    for(y=0;y<127;y++){
+        LCD_drawPixel(x+x_offset, y+y_offset, ILI9341_WHITE);
+    }
+}
+
+void plot_data(int val, int * hist){
+    
+    int temp;
+    int y_offset = 40;
+    int i;
+    char temp_msg[20];
+    
+    if(!hist[0]){
+        hist[0] = val%128;
+    }
+    else{
+        for(i=0; i<99; i++){
+            temp = hist[i];
+            hist[i+1] = temp;
+        }
+        hist[0] = val%128;
+    }
+    
+//    int y = val%128;
+    
+    for(i=0;i<100;i++){
+        LCD_drawPixel(210+i,hist[i]+y_offset, ILI9341_WHITE);
+    }
+    // Title
+    sprintf(temp_msg, "Sensor Value (0-1023)");
+    write_screen(210, 24, temp_msg);
+    
+    // Label
+    sprintf(temp_msg, "Time (ms)");
+    write_screen(240, 170, temp_msg);
+}
+
 void ui(){
     
     LCD_clearScreen(ILI9341_BLACK);
+    
+    plot_axis();
     
     char header[200];
     int index = 0;
     
     sprintf(header, "Northwestern University");
     while(header[index]) {
-        print_header(95 + 5*index, 0, header[index]);
+        print_header(105 + 5*index, 0, header[index]);
         index++;
     }
     
@@ -77,30 +144,16 @@ double transfer_function(int voltage){
 //    double pressure = (v_min + ((v_max-v_min)/(0.8*v_supply))*(v_output-(0.1*v_supply)))+14.7;
     
     // Proportional transfer function
-    double pressure = (((v_output/v_max))*150)-14.7;
+    double pressure = (((v_output/v_max))*150);//-14.7;
     
     return pressure;
 }
 
-void write_screen(int x, int y, char *msg){
-    int index = 0;
-    while(msg[index]) {
-        print_char(x + 5*index, y, msg[index]);
-        index++;
-    }
-}
+
 
 int main() {
 
     // Initializations
-
-//    SPI1_init();
-//    LCD_init();
-////    adcConfigureManual();             // Configure ADC
-//    adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
-//    AD1CON1SET = 0x8000;                // start ADC
-////    ctmu_setup ();
-//    initUART();
     
     // Touch Sensor
     ANSELBbits.ANSB2 = 1;           // sets RB3 (AN4) as analog
@@ -120,119 +173,56 @@ int main() {
     init_pic();
     
     // variables
-//    int freq = 5;
     int voltage;
-//    int cap = 0;
     double pressure=0;
     char temp_msg[30];
-//    int i = 0;
-//    char tx_msg[10];    
-//    char rx_msg[20];
-//    char buf[1024];       // declare receive buffer with max size 1024
-    
+    int hist[128];
+
     ui();
     
     while (1) {
 
         _CP0_SET_COUNT(0);              // start timer 
-
-//        heartbeat(freq);                   // 5 Hz
-
-//        voltage = analogRead(5); // note that we call pin AN5 (RB3) by it's analog number
-//        delay_us(voltage);       // delay according to the voltage at RB3 (AN5)
-//        LATBINV = 0x0020;     // invert the state of RB5
+        
         voltage = analogRead_auto();        // returns value between 0 and 1023
-//        pressure = transfer_function(voltage);
-//        cap = do_cap(4, (4800000/8)); // tuned
-
-        // Check if sensor is clipping
-        // Clipping occurs at 2.5% and 97.5% V_s (ADC values of 26 and 997)
-        if (voltage < 26 || voltage > 997){
-//            write_screen(200, 24, temp_msg)
-            sprintf(temp_msg, "Status: Clipping");
-            write_screen(200, 24, temp_msg);
-        }
-        else{
-            pressure = transfer_function(voltage);
-            sprintf(temp_msg, "Status: Normal  ");
-            write_screen(200, 24, temp_msg);
-        }
+        pressure = transfer_function(voltage);
+        plot_data(voltage, hist);
         
         if(PORTBbits.RB11){
             LATBbits.LATB12 = 1;
             LATBbits.LATB13 = 0;
-//            sprintf(temp_msg, "TRANSMITTING");
-//            write_screen(240, 40, temp_msg); 
             
-//            sprintf(tx_msg, "U%d",i);
-//            sprintf(temp_msg, "Tx: %s",tx_msg);
-//            write_screen(200, 72, temp_msg);
-//            writeUART(tx_msg);
-//            i++;
+            sprintf(temp_msg, "Actuator Status:     Extended ");
+            write_screen(28, 104, temp_msg);
+            while(_CP0_GET_COUNT() < 2400000){;}
+            sprintf(temp_msg, "Actuator Contact:    Touched  ");
+            write_screen(28, 120, temp_msg);            
+
         }
         if(PORTBbits.RB10){
             LATBbits.LATB12 = 0;
             LATBbits.LATB13 = 1;
-//            sprintf(temp_msg, "RECEIVING   ");
-//            write_screen(240, 40, temp_msg);
-//
-//            i = 0;
-//            sprintf(temp_msg, "Tx:              ");
-//            write_screen(200, 72, temp_msg);
-
-//            sprintf(tx_msg,"\r\n");
-//            writeUART(tx_msg);
-//            sprintf(temp_msg, "Tx:   %s", tx_msg);
-//            write_screen(200, 72, temp_msg);
- 
-
             
-//            unsigned int rx_size;
-//            rx_size = readUART(rx_msg, 1024);     // wait here until data is received
-//            writeUART(rx_msg);                    // Send out data exactly as received
-//
-//            // if anything was entered by user, be obnoxious and add a '?'
-//            if(rx_size > 0){ 
-//                sprintf(tx_msg,"?\r\n");
-//                writeUART(tx_msg);
-//                index = 0;
-//                sprintf(temp_msg, "Tx:   %s", tx_msg);
-//                while(temp_msg[index]) {
-//                    print_char(200 + 5*index, 72, temp_msg[index]);
-//                    index++;
-//                }
-//            }
+            sprintf(temp_msg, "Actuator Status:     Retracted");
+            write_screen(28, 104, temp_msg);
+            
+            sprintf(temp_msg, "Actuator Contact:    Untouched");
+            write_screen(28, 120, temp_msg);
         }
-        sprintf(temp_msg, "Pressure:           %5.3f PSI ", pressure);
+        
+        sprintf(temp_msg, "System Status");
         write_screen(28, 24, temp_msg);
         
-        sprintf(temp_msg, "Update Frequency:    %3.1f Hz", (24000000.0/_CP0_GET_COUNT()));
+        sprintf(temp_msg, "Pressure:            %5.3f PSI ", pressure);
         write_screen(28, 40, temp_msg);
         
-        sprintf(temp_msg, "RB10, Pin 21:   %d", PORTBbits.RB10);
+        sprintf(temp_msg, "Update Frequency:    %3.1f Hz  ", (24000000.0/_CP0_GET_COUNT()));
         write_screen(28, 56, temp_msg);
         
-        sprintf(temp_msg, "RB11, Pin 22:   %d", PORTBbits.RB11);
+        sprintf(temp_msg, "Serial Port:         Active");
         write_screen(28, 72, temp_msg);
         
-        sprintf(temp_msg, "RB12, Pin 23:   %d", LATBbits.LATB12);
+        sprintf(temp_msg, "Actuator Control:    Manual");
         write_screen(28, 88, temp_msg);
-        
-        sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
-        write_screen(28, 104, temp_msg);
-        
-//        sprintf(temp_msg, "ADC Read:           %d  ", voltage);
-//        write_screen(28, 86, temp_msg);
-//        if (cap>1120){
-//            sprintf(temp_msg, "Untouched");
-//            write_screen(240, 56, temp_msg);
-//        }
-//        else{
-//            sprintf(temp_msg, "Touched");
-//            write_screen(240, 56, temp_msg);           
-//        }
-//        
-//        draw_piston(PORTBbits.RB11);
-//        
     }
 }
