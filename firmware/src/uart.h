@@ -6,6 +6,6 @@
 
 void initUART(char tx, char rx);
 void writeUART(char * string);
-int readUART(char * message, int maxLength);
+void readUART(char * message, int maxLength);
 
 #endif // UART__H__

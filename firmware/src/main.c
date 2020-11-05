@@ -125,9 +125,9 @@ int main() {
 //    int cap = 0;
     double pressure=0;
     char temp_msg[30];
-//    int i = 0;
-//    char tx_msg[10];    
-//    char rx_msg[20];
+    int i = 0;
+    char tx_msg[10];    
+//    char rx_msg[1024];
 //    char buf[1024];       // declare receive buffer with max size 1024
     
     ui();
@@ -161,47 +161,42 @@ int main() {
         if(PORTBbits.RB11){
             LATBbits.LATB12 = 1;
             LATBbits.LATB13 = 0;
-//            sprintf(temp_msg, "TRANSMITTING");
-//            write_screen(240, 40, temp_msg); 
             
-//            sprintf(tx_msg, "U%d",i);
-//            sprintf(temp_msg, "Tx: %s",tx_msg);
-//            write_screen(200, 72, temp_msg);
-//            writeUART(tx_msg);
-//            i++;
+            sprintf(temp_msg, "TRANSMITTING");
+            write_screen(240, 40, temp_msg); 
+            sprintf(tx_msg, "U%d",i);
+            sprintf(temp_msg, "Tx: %s",tx_msg);
+            write_screen(200, 72, temp_msg);
+            writeUART(tx_msg);
+            i++;
+            
         }
         if(PORTBbits.RB10){
             LATBbits.LATB12 = 0;
             LATBbits.LATB13 = 1;
-//            sprintf(temp_msg, "RECEIVING   ");
-//            write_screen(240, 40, temp_msg);
-//
-//            i = 0;
-//            sprintf(temp_msg, "Tx:              ");
-//            write_screen(200, 72, temp_msg);
+            sprintf(temp_msg, "RECEIVING   ");
+            write_screen(240, 40, temp_msg);
+
+            i = 0;
+            sprintf(temp_msg, "Tx:              ");
+            write_screen(200, 72, temp_msg);
 
 //            sprintf(tx_msg,"\r\n");
 //            writeUART(tx_msg);
 //            sprintf(temp_msg, "Tx:   %s", tx_msg);
 //            write_screen(200, 72, temp_msg);
- 
 
-            
-//            unsigned int rx_size;
-//            rx_size = readUART(rx_msg, 1024);     // wait here until data is received
+            unsigned int rx_size = 0;
+//            readUART(rx_msg, 1024);     // wait here until data is received
 //            writeUART(rx_msg);                    // Send out data exactly as received
-//
-//            // if anything was entered by user, be obnoxious and add a '?'
-//            if(rx_size > 0){ 
-//                sprintf(tx_msg,"?\r\n");
-//                writeUART(tx_msg);
-//                index = 0;
-//                sprintf(temp_msg, "Tx:   %s", tx_msg);
-//                while(temp_msg[index]) {
-//                    print_char(200 + 5*index, 72, temp_msg[index]);
-//                    index++;
-//                }
-//            }
+
+            // if anything was entered by user, be obnoxious and add a '?'
+            if(rx_size > 0){ 
+                sprintf(tx_msg,"?\r\n");
+                writeUART(tx_msg);
+                sprintf(temp_msg, "Tx:   %s", tx_msg);
+                write_screen(200, 72, temp_msg);
+            }
         }
         sprintf(temp_msg, "Pressure:           %5.3f PSI ", pressure);
         write_screen(28, 24, temp_msg);
