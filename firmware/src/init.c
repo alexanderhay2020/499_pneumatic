@@ -1,5 +1,7 @@
 #include<xc.h>                      // processor SFR definitions
 #include<sys/attribs.h>             // __ISR macro
+#include<string.h>
+#include<stdio.h>
 
 #include "init.h"
 #include "ili9341.h"
@@ -38,6 +40,27 @@
 #pragma config PMDL1WAY = OFF       // allow multiple reconfigurations
 #pragma config IOL1WAY = OFF        // allow multiple reconfigurations
 
+void header(){
+    
+    LCD_clearScreen(ILI9341_BLACK);
+    
+    char header[200];
+    int index = 0;
+    
+    sprintf(header, "Northwestern University");
+    while(header[index]) {
+        print_header(95 + 5*index, 0, header[index]);
+        index++;
+    }
+    
+    index = 0;
+    sprintf(header, "Robotics and Sensorimotor Control Lab");
+    while(header[index]) {
+        print_header(75 + 5*index, 8, header[index]);
+        index++;
+    } 
+}
+
 void init_pic(){
 
     __builtin_disable_interrupts(); // disable interrupts while initializing things
@@ -53,7 +76,9 @@ void init_pic(){
     LCD_init();
     adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
     AD1CON1SET = 0x8000;                // start ADC
-    UART_Init(9600);
+    initUART(9600);
     
     __builtin_enable_interrupts();
+    
+    header();
 }

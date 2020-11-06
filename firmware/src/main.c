@@ -10,27 +10,6 @@
 #include "adc.h"
 #include "uart.h"
 
-void ui(){
-    
-    LCD_clearScreen(ILI9341_BLACK);
-    
-    char header[200];
-    int index = 0;
-    
-    sprintf(header, "Northwestern University");
-    while(header[index]) {
-        print_header(95 + 5*index, 0, header[index]);
-        index++;
-    }
-    
-    index = 0;
-    sprintf(header, "Robotics and Sensorimotor Control Lab");
-    while(header[index]) {
-        print_header(75 + 5*index, 8, header[index]);
-        index++;
-    } 
-}
-
 double transfer_function(int voltage){
     /* Voltage divider, as built, reduces voltage from 5v to 3.27v
      int voltage has a value between 0 and 1023 (PIC32 has a 10-bit resolution ADC)
@@ -74,14 +53,6 @@ void delay_ms(int ms){
 int main() {
 
     // Initializations
-
-//    SPI1_init();
-//    LCD_init();
-////    adcConfigureManual();             // Configure ADC
-//    adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
-//    AD1CON1SET = 0x8000;                // start ADC
-////    ctmu_setup ();
-//    initUART();
     
     // Touch Sensor
     ANSELBbits.ANSB2 = 1;           // sets RB3 (AN4) as analog
@@ -103,26 +74,21 @@ int main() {
     // variables
     int voltage;
     double pressure=0;
-    char temp_msg[30];
-    int cnt = 0;
-//    char tx_msg[10];    
-//    char rx_msg[1024];
-    
-    ui();
-    
-    /* Add a small delay for the serial terminal
-     *  Although the PIC sends out data fine, I've had some issues with serial terminals
-     *  being garbled if receiving data too soon after bringing the DTR line low and
-     *  starting the PIC's data transmission. This has ony been with higher baud rates ( > 9600) */
- 
+    char temp_msg[30]; 
+    char message[200];    
     
     while (1) {
 
         _CP0_SET_COUNT(0);                  // start timer 
         
-		printf("Counter value is %d\n", cnt);
-		delay_ms(1000); // Delay 1 second
-		cnt++;
+        readUART(message, 200);  // get message from computer
+//        writeUART(message);                     // send message back
+//        writeUART("\r\n");                      // carriage return and newline
+        
+//        sprintf(tx_msg,"test %d  \r\n", cnt);
+//        writeUART(tx_msg);
+//		delay_ms(1000); // Delay 1 second
+//        cnt++;
         
         voltage = analogRead_auto();        // returns value between 0 and 1023
         pressure = transfer_function(voltage);        
