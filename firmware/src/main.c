@@ -31,34 +31,6 @@ void ui(){
     } 
 }
 
-void heartbeat(int freq){
-    
-    double freq_clock = (1./freq)*24000000;
-    
-//    int index = 0;
-//    char temp_msg[20];
-//
-//    sprintf(temp_msg, "fps_clock:           %f", fps_clock);
-//    while(temp_msg[index]) {
-//        print_char(28 + 5*index, 56, temp_msg[index]);
-//        index++;
-//    }
-
-    if (LATAbits.LATA4 == 0){
-        LCD_drawPixel(0,0,ILI9341_WHITE); // flashes single LED on screen
-    }
-    else{
-        LCD_drawPixel(0,0,ILI9341_BLACK); // flashes single LED on screen
-    }
-
-    LATAbits.LATA4 = !LATAbits.LATA4;
-    
-    // core timer runs at half the sysclk (48MHz, 48000000)
-
-    while(_CP0_GET_COUNT() < freq_clock){;} // 5Hz (4800000/24000000)
-    
-}
-
 double transfer_function(int voltage){
     /* Voltage divider, as built, reduces voltage from 5v to 3.27v
      int voltage has a value between 0 and 1023 (PIC32 has a 10-bit resolution ADC)
@@ -118,86 +90,39 @@ int main() {
     TRISBbits.TRISB13 = 0;          // RB13 as output
 
     init_pic();
+    UART2Configure(9600, 0b0001, 0b0010);
     
     // variables
-//    int freq = 5;
     int voltage;
-//    int cap = 0;
     double pressure=0;
     char temp_msg[30];
-    int i = 0;
-    char tx_msg[10];    
+//    int i = 0;
+//    char tx_msg[10];    
 //    char rx_msg[1024];
-//    char buf[1024];       // declare receive buffer with max size 1024
+    char buf[1024];       // declare receive buffer with max size 1024
     
     ui();
+    
+    /* Add a small delay for the serial terminal
+     *  Although the PIC sends out data fine, I've had some issues with serial terminals
+     *  being garbled if receiving data too soon after bringing the DTR line low and
+     *  starting the PIC's data transmission. This has ony been with higher baud rates ( > 9600) */
+    int t;
+    for( t=0 ; t < 100000 ; t++);
+ 
+    sprintf(buf, "Hello Earthling!\r\n");
+    SerialTransmit(buf);
+//    SerialTransmit("Talk to me and hit 'enter'. Let the mocking begin!\r\n\r\n");
+ 
+//    unsigned int rx_size;
     
     while (1) {
 
         _CP0_SET_COUNT(0);              // start timer 
 
-//        heartbeat(freq);                   // 5 Hz
-
-//        voltage = analogRead(5); // note that we call pin AN5 (RB3) by it's analog number
-//        delay_us(voltage);       // delay according to the voltage at RB3 (AN5)
-//        LATBINV = 0x0020;     // invert the state of RB5
         voltage = analogRead_auto();        // returns value between 0 and 1023
-//        pressure = transfer_function(voltage);
-//        cap = do_cap(4, (4800000/8)); // tuned
+        pressure = transfer_function(voltage);        
 
-        // Check if sensor is clipping
-        // Clipping occurs at 2.5% and 97.5% V_s (ADC values of 26 and 997)
-        if (voltage < 26 || voltage > 997){
-//            write_screen(200, 24, temp_msg)
-            sprintf(temp_msg, "Status: Clipping");
-            write_screen(200, 24, temp_msg);
-        }
-        else{
-            pressure = transfer_function(voltage);
-            sprintf(temp_msg, "Status: Normal  ");
-            write_screen(200, 24, temp_msg);
-        }
-        
-        if(PORTBbits.RB11){
-            LATBbits.LATB12 = 1;
-            LATBbits.LATB13 = 0;
-            
-            sprintf(temp_msg, "TRANSMITTING");
-            write_screen(240, 40, temp_msg); 
-            sprintf(tx_msg, "U%d",i);
-            sprintf(temp_msg, "Tx: %s",tx_msg);
-            write_screen(200, 72, temp_msg);
-            writeUART(tx_msg);
-            i++;
-            
-        }
-        if(PORTBbits.RB10){
-            LATBbits.LATB12 = 0;
-            LATBbits.LATB13 = 1;
-            sprintf(temp_msg, "RECEIVING   ");
-            write_screen(240, 40, temp_msg);
-
-            i = 0;
-            sprintf(temp_msg, "Tx:              ");
-            write_screen(200, 72, temp_msg);
-
-//            sprintf(tx_msg,"\r\n");
-//            writeUART(tx_msg);
-//            sprintf(temp_msg, "Tx:   %s", tx_msg);
-//            write_screen(200, 72, temp_msg);
-
-            unsigned int rx_size = 0;
-//            readUART(rx_msg, 1024);     // wait here until data is received
-//            writeUART(rx_msg);                    // Send out data exactly as received
-
-            // if anything was entered by user, be obnoxious and add a '?'
-            if(rx_size > 0){ 
-                sprintf(tx_msg,"?\r\n");
-                writeUART(tx_msg);
-                sprintf(temp_msg, "Tx:   %s", tx_msg);
-                write_screen(200, 72, temp_msg);
-            }
-        }
         sprintf(temp_msg, "Pressure:           %5.3f PSI ", pressure);
         write_screen(28, 24, temp_msg);
         
@@ -216,18 +141,13 @@ int main() {
         sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
         write_screen(28, 104, temp_msg);
         
-//        sprintf(temp_msg, "ADC Read:           %d  ", voltage);
-//        write_screen(28, 86, temp_msg);
-//        if (cap>1120){
-//            sprintf(temp_msg, "Untouched");
-//            write_screen(240, 56, temp_msg);
+//        rx_size = SerialReceive(buf, 1024);     // wait here until data is received
+//        SerialTransmit(buf);                    // Send out data exactly as received
+// 
+//        // if anything was entered by user, be obnoxious and add a '?'
+//        if( rx_size > 0){ 
+//            SerialTransmit("?\r\n");
 //        }
-//        else{
-//            sprintf(temp_msg, "Touched");
-//            write_screen(240, 56, temp_msg);           
-//        }
-//        
-//        draw_piston(PORTBbits.RB11);
-//        
+//        SerialTransmit("\r\n");
     }
 }
