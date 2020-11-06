@@ -303,3 +303,11 @@ void clear_space(unsigned short x, unsigned y, unsigned short end) {
         x++;
     }
 }
+
+void write_screen(int x, int y, char *msg){
+    int index = 0;
+    while(msg[index]) {
+        print_char(x + 5*index, y, msg[index]);
+        index++;
+    }
+}

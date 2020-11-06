@@ -206,6 +206,6 @@ void LCD_clearScreen(unsigned short color);
 void print_char(unsigned short x, unsigned short y, char ch);
 void print_header(unsigned short x, unsigned short y, char ch);
 void clear_space(unsigned short x, unsigned y, unsigned short end);
-void draw_progress(int count);
+void write_screen(int x, int y, char *msg);
 
 #endif

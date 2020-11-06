@@ -33,14 +33,6 @@ double transfer_function(int voltage){
     return pressure;
 }
 
-void write_screen(int x, int y, char *msg){
-    int index = 0;
-    while(msg[index]) {
-        print_char(x + 5*index, y, msg[index]);
-        index++;
-    }
-}
-
 void _mon_putc (char c){
    while (U1STAbits.UTXBF); // Wait til current transmission is complete
    U1TXREG = c;
@@ -75,15 +67,12 @@ int main() {
     int voltage;
     double pressure=0;
     char temp_msg[30]; 
-    char message[200];    
+    char message[200]; 
+    char rx_msg;
     
     while (1) {
 
         _CP0_SET_COUNT(0);                  // start timer 
-        
-        readUART(message, 200);  // get message from computer
-//        writeUART(message);                     // send message back
-//        writeUART("\r\n");                      // carriage return and newline
         
         voltage = analogRead_auto();        // returns value between 0 and 1023
         pressure = transfer_function(voltage);        
@@ -105,6 +94,15 @@ int main() {
         
         sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
         write_screen(28, 104, temp_msg);
+        
+        sprintf(temp_msg, "before readUART");
+        write_screen(200, 24, temp_msg);
+        readUART(message, 200);  // get message from computer
+        sscanf(message, "%c", &rx_msg);
+        sprintf(temp_msg, "Received message:    %c", rx_msg);
+        write_screen(200, 24, temp_msg);
+//        writeUART(message);                     // send message back
+//        writeUART("\r\n");                      // carriage return and newline
         
     }
 }
