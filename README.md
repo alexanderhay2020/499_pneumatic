@@ -98,6 +98,10 @@ The PIC32 communicates with the pressure sensor using one of the analog input pi
 
 The solenoid operates at 120V and needed its own circuit. To control that circuit I used a relay module. This allows the PIC to control the 120V solenoid while still operating at 3.3V. Powered by its own 5V source, a command signal is sent to the relay module from the PIC. Energizing the solenoid to close the 120V circuit draws a lot of current, so the relay module should have it's own power supply.
 
+### Version Control
+
+As development continued it became increasingly important to track changes. Each peripheral had its own dedicated branch. Being the sole developer made development rather linear, but it provided a good opportunity to flex some git knowledge and pick up new tricks, like `git stash` and `git stash pop`. Working peripherals were then merged into the main branch. This project also demonstrated how important version control is for CAD! It was easy to take for granted how convenient git made working on the firmware. Moving forward, I'd like to utilize a revision system for the associated CAD designs.
+
 ## Future work
 
 During development I made it a priority that the device was MRI-compatible, which influenced many of the design considerations and challenges. The decision to use a pneumatic system made it so there is no interference from the apparatus during the MR imaging process. However, air is a compressible fluid which makes it difficult to control. A hydraulic system was considered to address that but was never implemented due to concerns about leakage.
