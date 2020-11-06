@@ -51,11 +51,9 @@ void init_pic(){
 
     SPI1_init();
     LCD_init();
-//    adcConfigureManual();             // Configure ADC
     adcConfigureAutoScan(0x0020, 1);    // REMEMBER TO CHANGE AD1CON2SET
     AD1CON1SET = 0x8000;                // start ADC
-//    ctmu_setup ();
-//    initUART(0b0001, 0b0010);
+    UART_Init(9600);
     
     __builtin_enable_interrupts();
 }

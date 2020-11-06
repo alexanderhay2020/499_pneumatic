@@ -62,6 +62,15 @@ void write_screen(int x, int y, char *msg){
     }
 }
 
+void _mon_putc (char c){
+   while (U1STAbits.UTXBF); // Wait til current transmission is complete
+   U1TXREG = c;
+}
+
+void delay_ms(int ms){
+    delay_us(ms * 1000);
+}
+
 int main() {
 
     // Initializations
@@ -90,16 +99,14 @@ int main() {
     TRISBbits.TRISB13 = 0;          // RB13 as output
 
     init_pic();
-    UART2Configure(9600, 0b0001, 0b0010);
     
     // variables
     int voltage;
     double pressure=0;
     char temp_msg[30];
-//    int i = 0;
+    int cnt = 0;
 //    char tx_msg[10];    
 //    char rx_msg[1024];
-    char buf[1024];       // declare receive buffer with max size 1024
     
     ui();
     
@@ -107,19 +114,16 @@ int main() {
      *  Although the PIC sends out data fine, I've had some issues with serial terminals
      *  being garbled if receiving data too soon after bringing the DTR line low and
      *  starting the PIC's data transmission. This has ony been with higher baud rates ( > 9600) */
-    int t;
-    for( t=0 ; t < 100000 ; t++);
  
-    sprintf(buf, "Hello Earthling!\r\n");
-    SerialTransmit(buf);
-//    SerialTransmit("Talk to me and hit 'enter'. Let the mocking begin!\r\n\r\n");
- 
-//    unsigned int rx_size;
     
     while (1) {
 
-        _CP0_SET_COUNT(0);              // start timer 
-
+        _CP0_SET_COUNT(0);                  // start timer 
+        
+		printf("Counter value is %d\n", cnt);
+		delay_ms(1000); // Delay 1 second
+		cnt++;
+        
         voltage = analogRead_auto();        // returns value between 0 and 1023
         pressure = transfer_function(voltage);        
 
@@ -141,13 +145,5 @@ int main() {
         sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
         write_screen(28, 104, temp_msg);
         
-//        rx_size = SerialReceive(buf, 1024);     // wait here until data is received
-//        SerialTransmit(buf);                    // Send out data exactly as received
-// 
-//        // if anything was entered by user, be obnoxious and add a '?'
-//        if( rx_size > 0){ 
-//            SerialTransmit("?\r\n");
-//        }
-//        SerialTransmit("\r\n");
     }
 }
