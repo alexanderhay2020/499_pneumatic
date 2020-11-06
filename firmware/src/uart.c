@@ -16,8 +16,8 @@ void initUART(int desired_baud){
     U1RXRbits.U1RXR = 0b0010;
     
     // Turn on UART1 without interrupt
-    U1MODEbits.BRGH = 0;                    // set baud to 9600 bits/sec
-    U1BRG = (SYSCLK / (16 * desired_baud)) - 1; // This is the formula straight from the datasheet
+    U1MODEbits.BRGH = 0;                            // set baud to 9600 bits/sec
+    U1BRG = (SYSCLK / (16 * desired_baud)) - 1;     // This is the formula straight from the datasheet
     
     // 8-bit, no parity bit, 1 stop bit (8N1 setup)
     U1MODEbits.PDSEL = 0;

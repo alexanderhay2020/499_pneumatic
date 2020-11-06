@@ -85,11 +85,6 @@ int main() {
 //        writeUART(message);                     // send message back
 //        writeUART("\r\n");                      // carriage return and newline
         
-//        sprintf(tx_msg,"test %d  \r\n", cnt);
-//        writeUART(tx_msg);
-//		delay_ms(1000); // Delay 1 second
-//        cnt++;
-        
         voltage = analogRead_auto();        // returns value between 0 and 1023
         pressure = transfer_function(voltage);        
 
