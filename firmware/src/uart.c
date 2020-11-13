@@ -64,6 +64,9 @@ void readUART(char * message, int maxLength){
                 }
             }
         }
+        else{
+            complete = 1;
+        }
     }
   // end the string
   message[num_bytes] = '\0';

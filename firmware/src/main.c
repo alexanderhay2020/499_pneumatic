@@ -4,6 +4,7 @@
 #include<sys/attribs.h>             // __ISR macro
 #include<string.h>
 #include<stdio.h>
+#include<stdlib.h>
 
 #include "init.h"
 #include "ili9341.h"
@@ -68,7 +69,7 @@ int main() {
     double pressure=0;
     char temp_msg[30]; 
     char message[200]; 
-    char rx_msg;
+    char rx_msg[10];
     
     while (1) {
 
@@ -95,14 +96,11 @@ int main() {
         sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
         write_screen(28, 104, temp_msg);
         
-        sprintf(temp_msg, "before readUART");
-        write_screen(200, 24, temp_msg);
         readUART(message, 200);  // get message from computer
-        sscanf(message, "%c", &rx_msg);
-        sprintf(temp_msg, "Received message:    %c", rx_msg);
-        write_screen(200, 24, temp_msg);
-//        writeUART(message);                     // send message back
+        sscanf(message, "%s", rx_msg);
+        write_screen(200, 104, rx_msg);
+//        snprintf(temp_msg, 30, "%f", pressure);
+//        writeUART(temp_msg);                     // send message back
 //        writeUART("\r\n");                      // carriage return and newline
-        
     }
 }
