@@ -98,8 +98,11 @@ The PIC32 communicates with the pressure sensor using one of the analog input pi
 
 The solenoid operates at 120V and needed its own circuit. To control that circuit I used a relay module. This allows the PIC to control the 120V solenoid while still operating at 3.3V. Powered by its own 5V source, a command signal is sent to the relay module from the PIC. Energizing the solenoid to close the 120V circuit draws a lot of current, so the relay module should have it's own power supply.
 
+<<<<<<< HEAD
 I designed plastic housings for the circuit components, which served three purposes; first, it addressed an important safety concern. The solenoid requires 120V, which is controlled by the relay. It doesn't need to be spelled out why 120V passing through an exposed connection is a bad idea. Second, it made me address the question "given the same resources, could someone else build this device?" Staring at a breadboard that looked like a gutted telephone box, I knew I had to do something. And thirdly, it helped focus the design. With each iteration I was able to consolidate connections, reduce circuit complexity, address hardware bug, and face UI/UX head-on. "Is this a usable device, or something I've stared too long at?" "Given the device, could they assemble it without instructions?"
 
+=======
+>>>>>>> uart
 ### Version Control
 
 As development continued it became increasingly important to track changes. Each peripheral had its own dedicated branch. Being the sole developer made development rather linear, but it provided a good opportunity to flex some git knowledge and pick up new tricks, like `git stash` and `git stash pop`. Working peripherals were then merged into the main branch. This project also demonstrated how important version control is for CAD! It was easy to take for granted how convenient git made working on the firmware. Moving forward, I'd like to utilize a revision system for the associated CAD designs.

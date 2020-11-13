@@ -8,7 +8,5 @@
 #define SYSCLK (48000000)
 
 void init_pic();
-void setPin(unsigned char add, unsigned char reg, unsigned char val);
-char readPin(unsigned char add, unsigned char reg);
 
 #endif // INIT__H__
