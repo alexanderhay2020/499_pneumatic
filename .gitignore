@@ -27,9 +27,8 @@ disassembly/
 *.p1
 *.obj
 *.sdb
-*.obj.dmp
+*.dmp
+*.elf
+*.hex
 
 # Keepers
-# *.elf
-# *.hex
-
