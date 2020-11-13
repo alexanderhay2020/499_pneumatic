@@ -1,0 +1,35 @@
+# Directories
+html/
+nbproject/private/
+nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+funclist
+nbproject/Makefile-*
+disassembly/
+
+# Files being edited
+*~
+
+# make and build files
+*.lst
+*.o
+*.eep
+*.lss
+*.map
+*.sym
+*.d
+*.pre
+*.p1
+*.obj
+*.sdb
+*.obj.dmp
+
+# Keepers
+# *.elf
+# *.hex
+
