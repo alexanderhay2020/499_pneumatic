@@ -1,16 +1,18 @@
 # Directories
-html/
-nbproject/private/
-nbproject/Package-*.bash
 build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
-funclist
-nbproject/Makefile-*
+design/*
 disassembly/
+dist/
+funclist
+html/
+
+nb-configuration.xml
+nbactions.xml
+nbbuild/
+nbdist/
+nbproject/Makefile-*
+nbproject/Package-*.bash
+nbproject/private/
 
 # Files being edited
 *~
