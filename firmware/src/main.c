@@ -39,13 +39,10 @@ void _mon_putc (char c){
    U1TXREG = c;
 }
 
-void delay_ms(int ms){
-    delay_us(ms * 1000);
-}
-
 int main() {
 
-    // Initializations
+    // Initializations//    AD1CON1SET = 0x8000;    // start ADC
+
     
     // Touch Sensor
     ANSELBbits.ANSB2 = 1;           // sets RB3 (AN4) as analog
@@ -65,17 +62,19 @@ int main() {
     init_pic();
     
     // variables
-    int voltage;
+    int voltage = 0;
+    int cap = 0;
     double pressure=0;
     char temp_msg[30]; 
-    char message[200]; 
-    char rx_msg[10];
+//    char message[200]; 
+//    char rx_msg[10];
     
     while (1) {
 
         _CP0_SET_COUNT(0);                  // start timer 
         
-        voltage = analogRead_auto();        // returns value between 0 and 1023
+//        voltage = analogRead_auto();        // returns value between 0 and 1023
+        voltage = analogRead(5);
         pressure = transfer_function(voltage);        
 
         sprintf(temp_msg, "Pressure:           %5.3f PSI ", pressure);
@@ -96,11 +95,19 @@ int main() {
         sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
         write_screen(28, 104, temp_msg);
         
-        readUART(message, 200);  // get message from computer
-        sscanf(message, "%s", rx_msg);
-        write_screen(200, 104, rx_msg);
-//        snprintf(temp_msg, 30, "%f", pressure);
-//        writeUART(temp_msg);                     // send message back
-//        writeUART("\r\n");                      // carriage return and newline
+//        readUART(message, 200);  // get message from computer
+//        sscanf(message, "%s", rx_msg);
+//        write_screen(200, 104, rx_msg);
+        
+        cap = ctmu_read(4, (4800000/4)); // tuned
+        
+        if (cap>400){
+            sprintf(temp_msg, "Touched: yes");
+        }
+        else{
+            sprintf(temp_msg, "Touched: no ");
+        }
+        write_screen(200, 104, temp_msg);
+
     }
 }

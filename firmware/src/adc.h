@@ -12,10 +12,9 @@
 #define ADC__H__
 
 int analogRead(char analogPIN);
-void delay_us(unsigned t);
+int analogRead_auto();
 void adcConfigureManual();
 void adcConfigureAutoScan(unsigned adcPINS, unsigned numPins);
-int analogRead_auto();
 
 void ctmu_setup();
 int ctmu_read(int pin, int delay);
