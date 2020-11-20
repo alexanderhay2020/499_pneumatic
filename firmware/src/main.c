@@ -72,6 +72,7 @@ int main() {
     while (1) {
 
         _CP0_SET_COUNT(0);                  // start timer 
+//        int i = 0;
         
 //        voltage = analogRead_auto();        // returns value between 0 and 1023
         voltage = analogRead(5);
@@ -94,20 +95,18 @@ int main() {
         
         sprintf(temp_msg, "RB13, Pin 24:   %d", LATBbits.LATB13);
         write_screen(28, 104, temp_msg);
-        
-//        readUART(message, 200);  // get message from computer
-//        sscanf(message, "%s", rx_msg);
-//        write_screen(200, 104, rx_msg);
-        
+
         cap = ctmu_read(4, (4800000/4)); // tuned
+        sprintf(temp_msg, "cap %d   ", cap);
+        write_screen(200, 88, temp_msg);
         
-        if (cap>400){
+        if (cap<200){
             sprintf(temp_msg, "Touched: yes");
+            while(_CP0_GET_COUNT() < 48000000 / 2 / 1000){}
         }
         else{
             sprintf(temp_msg, "Touched: no ");
         }
         write_screen(200, 104, temp_msg);
-
     }
 }
