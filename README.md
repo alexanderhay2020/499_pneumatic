@@ -13,7 +13,7 @@ The goal of this project is to design a device to provide a sensory stimulus in 
 
 #### Overview
 
-The somatosenory system is the mechanism by which the body interprets touch, pressure, temperature, proprioception, and pain. Once a sensation is perceived, sensory information travels via the Dorsal Column-Medial Lemniscal (DCML) pathway, or  the anterolateral column (noxious/thermal)<sup>[y]</sup>. After traveling up the spinal column and reaching the medulla the sensory information decussates, continuing up through the thalamus, and terminating in the somatosensory cortex. The crossing in the medulla is why a stroke in the right hemisphere of the brain affects the left side of the body, and vice versa.
+The somatosenory system is the mechanism by which the body interprets touch, pressure, temperature, proprioception, and pain. Once a sensation is perceived, sensory information travels via the Dorsal Column-Medial Lemniscal (DCML) pathway, or  the anterolateral column (noxious/thermal)<sup>[1]</sup>. After traveling up the spinal column and reaching the medulla the sensory information decussates, continuing up through the thalamus, and terminating in the somatosensory cortex. The crossing in the medulla is why a stroke in the right hemisphere of the brain affects the left side of the body, and vice versa.
 
 <p>
     <center><img src="/design/dcml.png" width="80%;" height="100%;" alt/>
@@ -31,7 +31,7 @@ Meissner and Pacinian corpuscles are both rapidly adapting cells, meaning they d
     <em>Figure 2: Receptors in the fingertip and the information they transduce</em></center>
 </p>
 
-Merkel cells are sensitive to deep, static touches, and low vibrations (0-100Hz). They have a small receptive field and transduce detailed information about the surface they’re interacting with. Merkel cells signal the static aspect of a touch stimulus, such as pressure, whereas the terminal portions of the Merkel afferents in these complexes transduce the dynamic aspects of stimuli.<sup>[1]</sup>
+Merkel cells are sensitive to deep, static touches, and low vibrations (0-100Hz). They have a small receptive field and transduce detailed information about the surface they’re interacting with. Merkel cells signal the static aspect of a touch stimulus, such as pressure, whereas the terminal portions of the Merkel afferents in these complexes transduce the dynamic aspects of stimuli.<sup>[2]</sup>
 
 ## Design
 
@@ -51,7 +51,7 @@ The following requirements were placed on the project for the following justific
 
 Five (5) methods of actuation were considered for this project; pneumatic, hydraulic, piezoelectric/ultrasonic, mechanical, and electromotive. MRI compatibility shaped most of the decision process, followed by ability to fabricate the device.
 
-The necessity of the actuator operating in an MRI environment rules out many conventional methods of actuation. Traditional actuators like DC or stepper motors cause electromagnetic interference. If placed near enough to the scanner they will cause EMF noise. Even if placed outside the scanner room there is still nonzero electromagnetic interference caused by the motors. Piezoelectric and ultrasonic motors are more common for this application, however a drawback to using such motors is that the motors can’t be actuated while imaging is taking place, otherwise there will be artifacts in the image. <sup>[[4]](https://pubmed.ncbi.nlm.nih.gov/18982643/)</sup> There are methods that address this issue<sup>[[5]](https://pubmed.ncbi.nlm.nih.gov/19964890/)</sup> but fall out of the scope of the project.
+The necessity of the actuator operating in an MRI environment rules out many conventional methods of actuation. Traditional actuators like DC or stepper motors cause electromagnetic interference. If placed near enough to the scanner they will cause EMF noise. Even if placed outside the scanner room there is still nonzero electromagnetic interference caused by the motors. Piezoelectric and ultrasonic motors are more common for this application, however a drawback to using such motors is that the motors can’t be actuated while imaging is taking place, otherwise there will be artifacts in the image.<sup>[[3]](https://pubmed.ncbi.nlm.nih.gov/18982643/)</sup> There are methods that address this issue<sup>[[4]](https://pubmed.ncbi.nlm.nih.gov/19964890/)</sup> but fall out of the scope of the project.
 
 <p>
     <center><img src="/design/snr.jpg" width="80%;" height="50%;" alt/>
@@ -88,7 +88,7 @@ Because the apparatus will press on the user’s fingertip It's also important t
     <em>Figure 6: Normal force applied to finger tip</em></center>
 </p>
 
-The fingernail is intrinsically part of the force-load structure of the fingertip; “note that the compression extends to the area around the bone as well as beneath it. This is because the nail bed fibers are in tension and pull the nail down with the bone, compressing all the tissue that is around the bone but beneath the nail...” “...slowly adapting type I afferents from the sides and end of the finger respond to stimuli on the center of the fingerpad.”<sup>[[3]](https://my.mech.utah.edu/~smascaro/pdf/Mascaro-2002-Haptics-NailBone.pdf)</sup> The experimental apparatus used by Birznieks et. al [H01]. has a similar function and caps the force applied to the fingertip at 4N.<sup>[[2]](https://pubmed.ncbi.nlm.nih.gov/11588194/)</sup>
+The fingernail is intrinsically part of the force-load structure of the fingertip; “note that the compression extends to the area around the bone as well as beneath it. This is because the nail bed fibers are in tension and pull the nail down with the bone, compressing all the tissue that is around the bone but beneath the nail...” “...slowly adapting type I afferents from the sides and end of the finger respond to stimuli on the center of the fingerpad.”<sup>[[5]](https://my.mech.utah.edu/~smascaro/pdf/Mascaro-2002-Haptics-NailBone.pdf)</sup> The experimental apparatus used by Birznieks et. al has a similar function and caps the force applied to the fingertip at 4N.<sup>[[6]](https://pubmed.ncbi.nlm.nih.gov/11588194/)</sup>
 
 It’s also important to understand whatever pain/damage thresholds exist in the body. Brennum et. al. investigated the pressure-pain threshold in 30 people [H08], and finds that pain can first be experienced when a pressure ~400kPa is applied to the fingertip. It should be noted that there’s some nuance to this, such as speed [H09] or probe shape.
 
@@ -149,24 +149,24 @@ During development I made it a priority that the device was MRI-compatible, whic
 
 That said, leakage still proved to be a nuisance throughout the project. Pistons of various sizes were printed in an effort to dial in the tolerances, but ultimately will require better surface finishing. In addition to O-Rings, piston rod rings were incorporated into the design to alleviate the issue. Though not unsuccessful, it was not utilized in the final design.
 
-The control loop has two pressure sensors and one touch sensor. An optical linear encoder using fiber optic cables was considered, which would've provided more certain feedback of the piston, but ultimately was shelved due to time constraints.
-
 Future work with this project will primarily focus on characterization of the actuator, as well as making each element more robust and providing the framework for which development can continue. The two largest lessons were in time management, setting realistic expectations and goals, and project management, learning how to juggle multiple facets of a project and navigating the way forward.
 
-Knowing if/when the piston engages with the finger is also important. The controller currently takes advantage of the CTMU module on the PIC32. For it to work, the surface that the fingertip engages with must be conductive (and MRI-compatible, ie. aluminum foil) for it to work. Studies examining the heating effects of MRI scanning have shown that no significant heating occurs with nonferromagnetic materials.<sup>[[2]](https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.1910070302?sid=nlm%3Apubmed)</sup> This means the individual won't risk burning their finger. And because the peripheral is non-moving, there's no risk of interference during imaging<sup>[[3]](https://pubmed.ncbi.nlm.nih.gov/18982643/)</sup>.
+The control loop has two pressure sensors and one touch sensor. An optical linear encoder using fiber optic cables was considered, which would've provided more certain feedback of the piston, but ultimately was shelved due to time constraints.
+
+Knowing if/when the piston engages with the finger is also important. The controller currently takes advantage of the CTMU module on the PIC32. For it to work, the surface that the fingertip engages with must be conductive (and MRI-compatible, ie. aluminum foil) for it to work. Studies examining the heating effects of MRI scanning have shown that no significant heating occurs with nonferromagnetic materials.<sup>[[7]](https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.1910070302?sid=nlm%3Apubmed)</sup> This means the individual won't risk burning their finger. And because the peripheral is non-moving, there's no risk of interference during imaging<sup>[[3]](https://pubmed.ncbi.nlm.nih.gov/18982643/)</sup>.
 
 ## References
 
-[y] Kandel, E. R., 2013. Principles of Neural Science. 5th ed.
+[1] Kandel, E. R., 2013. Principles of Neural Science. 5th ed.
 
-[1] Purves, D., Augustine, G., Fitzpatrick, D., Hall, W., LaMantia, A., Mooney, R., Platt, M. and White, L., 2018. Neuroscience. 6th ed.
+[2] Purves, D., Augustine, G., Fitzpatrick, D., Hall, W., LaMantia, A., Mooney, R., Platt, M. and White, L., 2018. Neuroscience. 6th ed.
 
-[2] Birznieks I, Jenmalm P, Goodwin AW, Johansson RS. Encoding of direction of fingertip forces by human tactile afferents. J Neurosci. 2001;21(20):8222-8237. doi:10.1523/JNEUROSCI.21-20-08222.2001
+[3] Fischer GS, Krieger A, Iordachita I, Csoma C, Whitcomb LL, Gabor F. MRI compatibility of robot actuation techniques--a comparative study. Med Image Comput Comput Assist Interv. 2008;11(Pt 2):509-517. doi:10.1007/978-3-540-85990-1_61
 
-[3] Mascaro S, Asada H. Understanding of fingernail-bone interaction and fingertip hemodynamics for fingernail sensor design. Proceedings 10th Symposium on Haptic Interfaces for Virtual Environment and Teleoperator Systems HAPTICS 2002. 2002. doi:10.1109/haptic.2002.998948
+[4] Wang Y, Cole GA, Su H, Pilitsis JG, Fischer GS. MRI compatibility evaluation of a piezoelectric actuator system for a neural interventional robot. Conf Proc IEEE Eng Med Biol Soc. 2009;2009:6072-6075. doi:10.1109/IEMBS.2009.5334206
 
-[4] Fischer GS, Krieger A, Iordachita I, Csoma C, Whitcomb LL, Gabor F. MRI compatibility of robot actuation techniques--a comparative study. Med Image Comput Comput Assist Interv. 2008;11(Pt 2):509-517. doi:10.1007/978-3-540-85990-1_61
+[5] Mascaro S, Asada H. Understanding of fingernail-bone interaction and fingertip hemodynamics for fingernail sensor design. Proceedings 10th Symposium on Haptic Interfaces for Virtual Environment and Teleoperator Systems HAPTICS 2002. 2002. doi:10.1109/haptic.2002.998948
 
-[5] Wang Y, Cole GA, Su H, Pilitsis JG, Fischer GS. MRI compatibility evaluation of a piezoelectric actuator system for a neural interventional robot. Conf Proc IEEE Eng Med Biol Soc. 2009;2009:6072-6075. doi:10.1109/IEMBS.2009.5334206
+[6] Birznieks I, Jenmalm P, Goodwin AW, Johansson RS. Encoding of direction of fingertip forces by human tactile afferents. J Neurosci. 2001;21(20):8222-8237. doi:10.1523/JNEUROSCI.21-20-08222.2001
 
-[x] Buchli R, Boesiger P, Meier D. Heating effects of metallic implants by MRI examinations. Magn Reson Med. 1988;7(3):255-261. doi:10.1002/mrm.1910070302
+[7] Buchli R, Boesiger P, Meier D. Heating effects of metallic implants by MRI examinations. Magn Reson Med. 1988;7(3):255-261. doi:10.1002/mrm.1910070302

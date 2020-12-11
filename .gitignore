@@ -1,10 +1,11 @@
 # Directories
 build/
-design/*
+design/
 disassembly/
 dist/
 funclist
 html/
+I2C_address_finder/
 
 nb-configuration.xml
 nbactions.xml
