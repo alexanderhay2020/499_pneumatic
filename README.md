@@ -5,6 +5,15 @@
     <center><img src="/design/schedule1.png" width="100%;" height="100%;" alt/></center>
 </p> -->
 
+<p>
+  <a href=""></a><div class=""></div>
+  <a href="https://youtu.be/s4PYeK4FzfA"><div class="color-button">YouTube</div></a>
+  <!-- manual link -->
+  <a href="https://docs.google.com/document/d/1iMdl5hpP_emYXVEchicDH41gPpMzWWeitnvOTYf4hh8/edit?usp=sharing"><div class="color-button">Manual</div></a>
+  <!-- Solidworks link -->
+  <a href="https://drive.google.com/drive/folders/13laoiJDyfBOlWCCcYVfk1w05I2iibtdy?usp=sharing"><div class="color-button">Solidworks</div></a>
+</p>
+
 ## Scope & Motivation
 
 The goal of this project is to design a device to provide a sensory stimulus in an MRI environment. The sensory signal generated from the stimulus will be traced using functional magnetic resonance imaging (fMRI). In individuals who have experienced a stroke this pathway is disrupted and can inhibit sensorimotor function. Tracing the sensory signal can help determine if the cause is from the signal not reaching the brain, or processing within the brain.
@@ -64,10 +73,16 @@ Pneumatic and hydraulic systems provide an alternative means of actuation. Often
 Mechanical devices can still be used if the proper precautions are made, but ultimately makes it a larger design problem than it needs to be.
 
 <p>
-    <center><img src="/design/2.png" width="100%;" height="100%;" alt/>
+    <center><img src="/design/decision_matrix.png" width="100%;" height="100%;" alt/>
     <br>
     <em>Figure 4: System decision matrix</em></center>
 </p>
+<!--
+<p>
+    <center><img src="/design/2.png" width="100%;" height="100%;" alt/>
+    <br>
+    <em>Figure 4: System decision matrix</em></center>
+</p> -->
 
 I chose to go with a pneumatic system for three reasons; 1) it's inherently free of any metal, plastic hardware is readily available and commonly used, 2) you can infer the force applied by the piston if you know the dimensions of the piston, and 3) it eliminates leakage as a concern, since fabrication and testing would take place in my apartment.
 
