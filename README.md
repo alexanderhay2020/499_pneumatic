@@ -6,12 +6,16 @@
 </p> -->
 
 <p>
-  <a href=""></a><div class=""></div>
   <a href="https://youtu.be/s4PYeK4FzfA"><div class="color-button">YouTube</div></a>
-  <!-- manual link -->
   <a href="https://docs.google.com/document/d/1iMdl5hpP_emYXVEchicDH41gPpMzWWeitnvOTYf4hh8/edit?usp=sharing"><div class="color-button">Manual</div></a>
-  <!-- Solidworks link -->
   <a href="https://drive.google.com/drive/folders/13laoiJDyfBOlWCCcYVfk1w05I2iibtdy?usp=sharing"><div class="color-button">Solidworks</div></a>
+</p>
+
+<p>
+  <center>
+    <a href="https://youtu.be/s4PYeK4FzfA"><img src="/assets/img/pneumatic_actuator/thumb_yt.png" width="90%;" height="95%;"></a>
+    <em> Demonstration video</em>
+  </center>
 </p>
 
 ## Scope & Motivation
