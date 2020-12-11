@@ -122,7 +122,7 @@ It’s also important to understand whatever pain/damage thresholds exist in the
 To create the sensory signal I designed a small piston that presses on the finger. I used Solidworks to model the the piston, controller housing, and relay housing, Cura for slicing, and an Ender3 Pro 3D printer. It's made with PLA filament, Fittings and ports were purchased online. Here are links for the [.stl files](https://docs.google.com/document/d/1iMdl5hpP_emYXVEchicDH41gPpMzWWeitnvOTYf4hh8/edit?usp=sharing) and [device manual](https://drive.google.com/drive/folders/13laoiJDyfBOlWCCcYVfk1w05I2iibtdy?usp=sharing). A PIC32 microcontroller controls the system programmed using MPLAB. The PIC communicates with a computer serially using Python.
 
 <p>
-    <center><img src="/design/controller.png" width="80%;" height="50%;" alt/>
+    <center><img src="/design/cutaway.png" width="80%;" height="50%;" alt/>
     <br>
     <em>Figure 8: Cross section of the pneumatic actuator model</em></center>
 </p>
@@ -130,7 +130,7 @@ To create the sensory signal I designed a small piston that presses on the finge
 An FTDI-USB cable provides a voltage source for the PIC and facilitates serial communication with a computer. The voltage from the regulator typically measures 3.36V. A separate 6V source is needed for the MIC2940 regulator to power the 5V peripherals. System status is displayed to a 320x240 LCD touchscreen. It monitors system pressure, sensor frequency, serial communications, and touch sensitivity, and can graph sensor data in real time.
 
 <p>
-    <center><img src="/design/2020_11_10.png" width="100%;" height="100%;" alt/>
+    <center><img src="/design/controller.png" width="80%;" height="50%;" alt/>
     <br>
     <em>Figure 9: Controller</em></center>
 </p>
