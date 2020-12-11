@@ -97,7 +97,7 @@ It’s also important to understand whatever pain/damage thresholds exist in the
 <p>
     <center><img src="/design/all.png" width="80%;" height="50%;" alt/>
     <br>
-    <em>Figure 7: Components of the system</em></center>
+    <em>Figure 7: Main system components</em></center>
 </p>
 
 To create the sensory signal I designed a small piston that presses on the finger. I used Solidworks to model the the piston, controller housing, and relay housing, Cura for slicing, and an Ender3 Pro 3D printer. It's made with PLA filament, Fittings and ports were purchased online. Here are links for the [.stl files](https://docs.google.com/document/d/1iMdl5hpP_emYXVEchicDH41gPpMzWWeitnvOTYf4hh8/edit?usp=sharing) and [device manual](https://drive.google.com/drive/folders/13laoiJDyfBOlWCCcYVfk1w05I2iibtdy?usp=sharing). A PIC32 microcontroller controls the system programmed using MPLAB. The PIC communicates with a computer serially using Python.
