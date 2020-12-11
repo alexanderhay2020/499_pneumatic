@@ -114,7 +114,7 @@ It’s also important to understand whatever pain/damage thresholds exist in the
 ## Apparatus
 
 <p>
-    <center><img src="/design/1.png" width="80%;" height="50%;" alt/>
+    <center><img src="/design/main.png" width="80%;" height="50%;" alt/>
     <br>
     <em>Figure 7: Main system components</em></center>
 </p>
