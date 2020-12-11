@@ -64,7 +64,7 @@ Pneumatic and hydraulic systems provide an alternative means of actuation. Often
 Mechanical devices can still be used if the proper precautions are made, but ultimately makes it a larger design problem than it needs to be.
 
 <p>
-    <center><img src="/design/decision_matrix.png" width="100%;" height="100%;" alt/>
+    <center><img src="/design/2.png" width="100%;" height="100%;" alt/>
     <br>
     <em>Figure 4: System decision matrix</em></center>
 </p>
@@ -95,7 +95,7 @@ It’s also important to understand whatever pain/damage thresholds exist in the
 ## Apparatus
 
 <p>
-    <center><img src="/design/all.png" width="80%;" height="50%;" alt/>
+    <center><img src="/design/1.png" width="80%;" height="50%;" alt/>
     <br>
     <em>Figure 7: Main system components</em></center>
 </p>
